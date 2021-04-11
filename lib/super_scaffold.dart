@@ -1,20 +1,59 @@
 library super_scaffold;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SuperScaffold extends StatefulWidget {
+  final bool extendBody;
+  final bool extendBodyBehindAppBar;
   final Widget? appBar;
-  final Drawer? drawer;
   final Widget? body;
   final FloatingActionButton? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final FloatingActionButtonAnimator? floatingActionButtonAnimator;
+  final List<Widget>? persistentFooterButtons;
+  final Drawer? drawer;
+  final DrawerCallback? onDrawerChanged;
+  final Drawer? endDrawer;
+  final DrawerCallback? onEndDrawerChanged;
+  final Color? drawerScrimColor;
+  final Color? backgroundColor;
+  final Widget? bottomNavigationBar;
+  final Widget? bottomSheet;
+  final bool? resizeToAvoidBottomInset;
+  final bool primary;
+  final DragStartBehavior drawerDragStartBehavior;
+  final double? drawerEdgeDragWidth;
+  final bool drawerEnableOpenDragGesture;
+  final bool endDrawerEnableOpenDragGesture;
+  final String? restorationId;
 
   final Future<bool> Function()? onWillPop;
 
   const SuperScaffold({
     this.appBar,
-    this.drawer,
-    this.body, 
+    this.body,
     this.floatingActionButton,
+    this.floatingActionButtonLocation,
+    this.floatingActionButtonAnimator,
+    this.persistentFooterButtons,
+    this.drawer,
+    this.onDrawerChanged,
+    this.endDrawer,
+    this.onEndDrawerChanged,
+    this.bottomNavigationBar,
+    this.bottomSheet,
+    this.backgroundColor,
+    this.resizeToAvoidBottomInset,
+    this.primary = true,
+    this.drawerDragStartBehavior = DragStartBehavior.start,
+    this.extendBody = false,
+    this.extendBodyBehindAppBar = false,
+    this.drawerScrimColor,
+    this.drawerEdgeDragWidth,
+    this.drawerEnableOpenDragGesture = true,
+    this.endDrawerEnableOpenDragGesture = true,
+    this.restorationId,
     this.onWillPop,
   });
   
@@ -47,13 +86,32 @@ class _SuperScaffoldState extends State<SuperScaffold> with SingleTickerProvider
   Widget _buildScaffold(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      body: widget.body,
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation: widget.floatingActionButtonLocation,
+      floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
+      persistentFooterButtons: widget.persistentFooterButtons,
       drawer: 
         MediaQuery.of(context).orientation == Orientation.portrait
         ? widget.drawer
         : null
       ,
-      body: widget.body,
-      floatingActionButton: widget.floatingActionButton,
+      onDrawerChanged: widget.onDrawerChanged,
+      endDrawer: widget.endDrawer,
+      onEndDrawerChanged: widget.onEndDrawerChanged,
+      bottomNavigationBar: widget.bottomNavigationBar,
+      bottomSheet: widget.bottomSheet,
+      backgroundColor: widget.backgroundColor,
+      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+      primary: widget.primary,
+      drawerDragStartBehavior: widget.drawerDragStartBehavior,
+      extendBody: widget.extendBody,
+      extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+      drawerScrimColor: widget.drawerScrimColor,
+      drawerEdgeDragWidth: widget.drawerEdgeDragWidth,
+      drawerEnableOpenDragGesture: widget.drawerEnableOpenDragGesture,
+      endDrawerEnableOpenDragGesture: widget.endDrawerEnableOpenDragGesture,
+      restorationId: widget.restorationId,
     );
   }
 
