@@ -8,13 +8,13 @@ class SuperScaffold extends StatefulWidget {
   final bool extendBodyBehindAppBar;
   final Widget? appBar;
   final Widget? body;
-  final FloatingActionButton? floatingActionButton;
+  final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
   final List<Widget>? persistentFooterButtons;
-  final Drawer? drawer;
+  final Widget? drawer;
   final DrawerCallback? onDrawerChanged;
-  final Drawer? endDrawer;
+  final Widget? endDrawer;
   final DrawerCallback? onEndDrawerChanged;
   final Color? drawerScrimColor;
   final Color? backgroundColor;
