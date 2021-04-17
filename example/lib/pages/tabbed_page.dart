@@ -6,7 +6,7 @@ class TabbedPage extends StatefulWidget {
   _TabbedPageState createState() => _TabbedPageState();
 }
 
-class _TabbedPageState extends SuperScaffoldPage<TabbedPage> {
+class _TabbedPageState extends SuperState<TabbedPage> {
   @override
   int get tabsLength => 3;
 

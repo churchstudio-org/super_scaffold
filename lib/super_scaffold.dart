@@ -2,6 +2,7 @@ library super_scaffold;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SuperScaffold extends StatefulWidget {
   final bool extendBody;
@@ -61,13 +62,13 @@ class SuperScaffold extends StatefulWidget {
   _SuperScaffoldState createState() => _SuperScaffoldState();
 }
 
-class _SuperScaffoldState extends State<SuperScaffold> with SingleTickerProviderStateMixin {
-  SuperScaffoldPage? page;
+class _SuperScaffoldState extends State<SuperScaffold> {
+  ISuperState? page;
 
   @override
   void initState() {
     super.initState();
-    page = context.findAncestorStateOfType<SuperScaffoldPage>();
+    page = context.findAncestorStateOfType<ISuperState>();
   }
   
   PreferredSize? _buildAppBar() {
@@ -145,19 +146,44 @@ class _SuperScaffoldState extends State<SuperScaffold> with SingleTickerProvider
   }
 }
 
-abstract class SuperScaffoldPage<T extends StatefulWidget> extends State<T> with SingleTickerProviderStateMixin {
+mixin SuperStateMixin {
   TabController? tabController;
 
   int get tabsLength => 0;
 
   bool get hasTabs => tabsLength > 0;
+  
+  @protected
+  void createTabControllerOfTickerProvider(TickerProvider vsync) {
+    if (hasTabs) {
+      tabController = TabController(length: tabsLength, vsync: vsync);
+    }
+  }
+}
 
+abstract class ISuperState<T extends StatefulWidget> extends State<T> with SuperStateMixin {
+  @override
+  void initState();
+}
+
+abstract class SuperState<T extends StatefulWidget>
+extends State<T>
+with SuperStateMixin, TickerProviderStateMixin
+implements ISuperState<T> {
   @override
   void initState() {
     super.initState();
+    createTabControllerOfTickerProvider(this);
+  }
+}
 
-    if (hasTabs) {
-      tabController = TabController(length: tabsLength, vsync: this);
-    }
+abstract class SuperModularState<TWidget extends StatefulWidget, TBind extends Object>
+extends ModularState<TWidget, TBind>
+with SuperStateMixin, TickerProviderStateMixin
+implements ISuperState<TWidget> {
+  @override
+  void initState() {
+    super.initState();
+    createTabControllerOfTickerProvider(this);
   }
 }

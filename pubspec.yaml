@@ -9,6 +9,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  flutter_modular: ">=0.4.0"
   flutter:
     sdk: flutter
 
