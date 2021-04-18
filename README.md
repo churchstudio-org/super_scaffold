@@ -6,7 +6,7 @@ An extension of Flutter Scaffold that pinns the Drawer on the left of screen if 
 
 If you are targeting just portrait screens, there is no problem with default Scaffold. But, if you want to make your application responsive to another orientation (like landscape), you'll see that behaviour:
 
-![Flutter Scaffold Landscape](./assets/README/flutter_scaffold_landscape.png)
+![Flutter Scaffold Landscape](https://raw.githubusercontent.com/lucaslannes/super_scaffold/main/assets/README/flutter_scaffold_landscape.png)
 
 So, how we can solve this problem?
 
@@ -23,7 +23,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-![Super Scaffold Landscape](./assets/README/super_scaffold_landscape.png)
+![Super Scaffold Landscape](https://raw.githubusercontent.com/lucaslannes/super_scaffold/main/assets/README/super_scaffold_landscape.png)
 
 All properties of Scaffold can be applied in SuperScaffold, like `appBar`, `body`, `floatingActionButton` and so on.
 

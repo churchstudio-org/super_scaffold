@@ -1,6 +1,6 @@
 name: super_scaffold
 description: An extension of Flutter Scaffold that pinns the Drawer on the left of screen if has enough space and fixes the Hero transitions between AppBars.
-version: 0.0.1+1
+version: 0.0.1+2
 homepage: https://github.com/lucaslannes/super_scaffold
 
 environment:

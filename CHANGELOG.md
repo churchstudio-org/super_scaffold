@@ -1,3 +1,7 @@
+## 0.0.1+2
+
+* Fix again broken screenshots of README
+
 ## 0.0.1+1
 
 * Fix images of README
