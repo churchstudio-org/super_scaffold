@@ -1,3 +1,7 @@
+## 0.0.1+1
+
+* Fix images of README
+
 ## 0.0.1
 
 * Pin the Drawer on the left of landscape screens
