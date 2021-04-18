@@ -1,3 +1,4 @@
+import 'package:example/components/custom_drawer.dart';
 import 'package:example/pages/tabbed_page.dart';
 import 'package:flutter/material.dart';
 import 'package:super_scaffold/super_scaffold.dart';
@@ -44,14 +45,10 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      drawer: Drawer(
-        elevation: 0,
-        child: Center(
-          child: Text("Drawer"),
-        ),
-      ),
+      drawer: CustomDrawer(),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () {},
       ),
     );

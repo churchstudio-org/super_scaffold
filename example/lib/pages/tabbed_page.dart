@@ -1,3 +1,4 @@
+import 'package:example/components/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:super_scaffold/super_scaffold.dart';
 
@@ -37,12 +38,7 @@ class _TabbedPageState extends SuperState<TabbedPage> {
           ),
         ),
       ),
-      drawer: Drawer(
-        elevation: 0,
-        child: Center(
-          child: Text("Drawer"),
-        ),
-      ),
+      drawer: CustomDrawer(),
     );
   }
 }

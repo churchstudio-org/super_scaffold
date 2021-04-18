@@ -1,3 +1,4 @@
-## [0.0.1] - TODO: Add release date.
+## 0.0.1
 
-* TODO: Describe initial release.
+* Pin the Drawer on the left of landscape screens
+* Pin the AppBar on the top of screen using Hero
