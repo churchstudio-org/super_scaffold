@@ -8,7 +8,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends SuperState<MainPage> {
   Widget _buildBody() {
     return ListView(
       children: [
@@ -21,7 +21,19 @@ class _MainPageState extends State<MainPage> {
               builder: (_) => TabbedPage()
             )
           ),
-        )
+        ),
+        ...[
+          for (var i = 0; i < 10; i++)
+            ListTile(
+              title: Text("Title $i"),
+              subtitle: Text("Subtitle $i"),
+              onTap: () async {
+                bool ok = await scaffold!.waitConfirmation("Message $i");
+                if (ok) print("Promise $i");
+              }
+            )
+          ,
+        ]
       ],
     );
   }
@@ -49,7 +61,19 @@ class _MainPageState extends State<MainPage> {
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () async {
+          bool ok = await scaffold!.waitConfirmation("Do you want to continue?");
+
+          if (ok) {
+            scaffold!.showLoading();
+            
+            await Future.delayed(Duration(milliseconds: 1000));
+            
+            scaffold!.hideLoading();
+
+            print("Hello World");
+          }
+        },
       ),
     );
   }
