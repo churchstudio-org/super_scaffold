@@ -5,29 +5,42 @@ import 'package:flutter/widgets.dart';
 class SuperScaffoldController {
   String? confirmationMessage;
   
-  ValueNotifier<bool> waitingConfirmation = ValueNotifier(false);
-  ValueNotifier<bool> isLoading = ValueNotifier(false);
+  ValueNotifier<bool> waiting = ValueNotifier(false);
 
-  Completer<bool>? confirmationCompleter;
+  Completer<bool>? confirmation;
+  Completer? loading;
 
-  Future<bool> waitConfirmation(String message) async {
-    confirmationCompleter = Completer();
+  bool get isConfirming => confirmation != null && !confirmation!.isCompleted;
+  bool get isLoading => loading != null && !loading!.isCompleted;
+
+  Future<bool> confirm(String message) async {
+    confirmation = Completer();
     confirmationMessage = message;
-    waitingConfirmation.value = true;
+    waiting.value = true;
 
-    return confirmationCompleter!.future;
+    return confirmation!.future;
   }
 
   void acceptConfirmation() async {
-    waitingConfirmation.value = false;
-    confirmationCompleter!.complete(true);
+    waiting.value = false;
+    confirmation!.complete(true);
   }
 
   void cancelConfirmation() {
-    waitingConfirmation.value = false;
-    confirmationCompleter!.complete(false);
+    if (!confirmation!.isCompleted) {
+      waiting.value = false;
+      confirmation!.complete(false);
+    }
   }
 
-  void showLoading() => isLoading.value = true;
-  void hideLoading() => isLoading.value = false;
+  Completer wait() {
+    loading = Completer();
+    waiting.value = true;
+
+    loading!.future.whenComplete(() {
+      waiting.value = false;
+    });
+
+    return loading!;
+  }
 }

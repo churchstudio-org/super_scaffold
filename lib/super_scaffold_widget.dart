@@ -28,6 +28,13 @@ class SuperScaffold extends StatefulWidget {
   final bool endDrawerEnableOpenDragGesture;
   final String? restorationId;
 
+  final Widget Function(BuildContext context, String message)? confirmationBuilder;
+  final Widget Function(BuildContext context)? loadingBuilder;
+
+  final String confirmationTitle;
+  final String positiveConfirmationText;
+  final String negativeConfirmationText;
+
   final Future<bool> Function()? onWillPop;
 
   const SuperScaffold({
@@ -54,6 +61,11 @@ class SuperScaffold extends StatefulWidget {
     this.drawerEnableOpenDragGesture = true,
     this.endDrawerEnableOpenDragGesture = true,
     this.restorationId,
+    this.confirmationBuilder,
+    this.loadingBuilder,
+    this.confirmationTitle = "Confirmation",
+    this.positiveConfirmationText = "Confirm",
+    this.negativeConfirmationText = "Cancel",
     this.onWillPop,
   });
   
@@ -74,6 +86,22 @@ class _SuperScaffoldState extends State<SuperScaffold> {
     if (page != null) {
       page!.scaffold = controller;
     }
+
+    controller.waiting.addListener(() {
+      if (controller.waiting.value) {
+        if (controller.isConfirming) {
+          showDialog(
+            context: context, 
+            builder: (context) => _buildConfirmation(context),
+          );
+        } else if (controller.isLoading) {
+          showDialog(
+            context: context, 
+            builder: (context) => _buildLoading(context),
+          );
+        }
+      }
+    });
   }
   
   PreferredSize? _buildAppBar() {
@@ -92,7 +120,7 @@ class _SuperScaffoldState extends State<SuperScaffold> {
   Widget _buildScaffold(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _buildBody(),
+      body: widget.body,
       floatingActionButton: widget.floatingActionButton,
       floatingActionButtonLocation: widget.floatingActionButtonLocation,
       floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
@@ -121,84 +149,55 @@ class _SuperScaffoldState extends State<SuperScaffold> {
     );
   }
 
-  Widget _buildBody() {
-    return Stack(
-      children: [
-        widget.body ?? SizedBox(),
-        _buildConfirmationDialog(),
-        _buildPromiseWaiting(),
-      ],
-    );
-  }
-
-  Widget _buildConfirmationDialog() {
-    return ValueListenableBuilder<bool>(
-      valueListenable: controller.waitingConfirmation, 
-      builder: (context, value, child) => value
-        ? GestureDetector(
-          onTap: controller.cancelConfirmation,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 32.0,
+  Widget _buildConfirmation(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        controller.cancelConfirmation();
+        return Future.value(true);
+      },
+      child: widget.confirmationBuilder != null
+        ? widget.confirmationBuilder!(context, controller.confirmationMessage!)
+        : AlertDialog(
+          title: Text(widget.confirmationTitle),
+          content: Text(controller.confirmationMessage!),
+          actions: [
+            FlatButton(
+              child: Text(widget.negativeConfirmationText),
+              onPressed: () {
+                controller.cancelConfirmation();
+                Navigator.of(context).pop();
+              },
             ),
-            alignment: Alignment.center,
-            color: Colors.black38,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 32.0,
-                horizontal: 8.0,
-              ),
-              constraints: BoxConstraints(
-                maxWidth: 512,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(controller.confirmationMessage!),
-                  SizedBox(height: 16.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FlatButton(
-                        onPressed: controller.cancelConfirmation,
-                        child: Text("Cancelar"),
-                      ),
-                      RaisedButton(
-                        onPressed: controller.acceptConfirmation,
-                        child: Text("Continuar"),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
+            FlatButton(
+              child: Text(widget.positiveConfirmationText),
+              onPressed: () {
+                controller.acceptConfirmation();
+                Navigator.of(context).pop();
+              }
             ),
-          ),
+          ],
         )
-        : SizedBox()
       ,
     );
   }
 
-  Widget _buildPromiseWaiting() {
-    return ValueListenableBuilder<bool>(
-      valueListenable: controller.isLoading, 
-      builder: (context, value, child) => value
-        ? Container(
-          color: Colors.black38,
-          child: Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.white),
-            )
-          ),
-        )
-        : SizedBox()
-      ,
-    );
+  Widget _buildLoading(BuildContext context) {
+    controller
+          .loading!
+          .future
+          .whenComplete(Navigator.of(context).pop);
+
+    return widget.loadingBuilder != null
+      ? widget.loadingBuilder!(context)
+      : Container(
+        color: Colors.black38,
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Colors.white),
+          )
+        ),
+      )
+    ;
   }
 
   @override
