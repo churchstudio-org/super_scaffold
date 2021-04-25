@@ -1,18 +1,14 @@
 # Super Scaffold
 
-An extension of Flutter Scaffold that pinns the Drawer on the left of screen if has enough space and fixes the Hero transitions between AppBars.
+A scaffold with superpowers! Pin the Drawer on the left of screen. Pin the AppBar on the top of screen. Show confirmation dialog and loading screen easily.
 
-## What is the problem with default Scaffold?
+## Pin the Drawer on the left of screens
 
-If you are targeting just portrait screens, there is no problem with default Scaffold. But, if you want to make your application responsive to another orientation (like landscape), you'll see that behaviour:
+If you want to make your application responsive to another orientation (like landscape), but you're using the default Flutter Scaffold, then you'll see that behaviour:
 
 ![Flutter Scaffold Landscape](https://raw.githubusercontent.com/lucaslannes/super_scaffold/main/assets/README/flutter_scaffold_landscape.png)
 
-So, how we can solve this problem?
-
-## Pinning the Drawer on left of large screens
-
-Unfortunately, default Scaffold does not have this feature yet. So, just replace your Scaffold widget with the SuperScaffold widget.
+How we can solve this problem? Just replace your Scaffold widget with the SuperScaffold widget.
 
 ```dart
 @override
@@ -27,11 +23,9 @@ Widget build(BuildContext context) {
 
 All properties of Scaffold can be applied in SuperScaffold, like `appBar`, `body`, `floatingActionButton` and so on.
 
-## Pinning the AppBar on the top of screen
+## Pin the AppBar on the top of screen
 
-If your application have some navigation, is natural put an AppBar on some screens.
-
-Normally, the screen that we are navigating is pushed with some transition (like a slide animation), and this is fine in mobile experiences. But, if you want to pin this AppBars, just insert them inside a Hero widget.
+If you're navigating between some pages and want to pin the AppBar on the top of screen, just insert them inside a Hero widget.
 
 ```dart
 @override
@@ -60,10 +54,13 @@ class _PageState extends SuperState<Page> {
     @override
     Widget build(BuildContext context) {
         return SuperScaffold(
-            appBar: AppBar(
-                bottom: TabBar(
-                    controller: tabController,
-                    ...
+            appBar: Hero(
+                tag: "tag",
+                child: AppBar(
+                    bottom: TabBar(
+                        controller: tabController,
+                        ...
+                    ),
                 ),
             ),
             drawer: Drawer(),
@@ -76,6 +73,77 @@ class _PageState extends SuperState<Page> {
 }
 ```
 
-## Do you found an issue or have some question?
+## Show confirmation dialog
+
+First, replace State with SuperState on your StatefulWidget that will display the confirmation dialog.
+
+Then, call the asynchronous method `confirm` from the `scaffold` property of the SuperState.
+
+```dart
+class _PageState extends SuperState<Page> {
+    @override
+    Widget build(BuildContext context) {
+        return SuperScaffold(
+            floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () async {
+                    bool ok = await scaffold!.confirm("Do you want to continue?");
+                },
+            ),
+        );
+    }
+}
+```
+
+## Show loading screen
+
+First, replace State with SuperState on your StatefulWidget that will display the loading screen.
+
+Then, call the method `wait` from the `scaffold` property of the SuperState.
+
+```dart
+class _PageState extends SuperState<Page> {
+    @override
+    Widget build(BuildContext context) {
+        return SuperScaffold(
+            floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.refresh),
+                onPressed: () async {
+                    Completer loading = scaffold!.wait();
+
+                    await Future.delayed(Duration(milliseconds: 1500));
+
+                    loading.complete();
+                },
+            ),
+        );
+    }
+}
+```
+
+## Custom confirmation dialog and loading screen
+
+The SuperScaffold widget uses the default AlertDialog of Flutter to display the confirmation dialog and the loading screen is just a centered CircularProgressIndicator.
+
+Design your custom confirmation dialog and loading screen with the `confirmationBuilder` and the `loadingBuilder`, respectivately.
+
+```dart
+@override
+Widget build(BuildContext context) {
+    return SuperScaffold(
+        drawer: Drawer(),
+        confirmationBuilder: (context, confirmationMessage) {
+            return ...
+        },
+        loadingBuilder: (context) {
+            return ...
+        }
+    );
+}
+```
+
+## Do you found an issue, have some question or maybe want to contribute?
 
 Feel free to contact me through GitHub repository.
+
+God bless you.

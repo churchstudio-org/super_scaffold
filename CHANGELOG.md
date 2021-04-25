@@ -1,3 +1,8 @@
+## 0.0.2
+
+* Show confirmation dialog
+* Show loading screen
+
 ## 0.0.1+2
 
 * Fix again broken screenshots of README
