@@ -9,7 +9,7 @@ mixin SuperStateMixin {
   int get tabsLength => 0;
 
   bool get hasTabs => tabsLength > 0;
-  
+
   @protected
   void createTabControllerOfTickerProvider(TickerProvider vsync) {
     if (hasTabs) {
@@ -18,15 +18,15 @@ mixin SuperStateMixin {
   }
 }
 
-abstract class ISuperState<T extends StatefulWidget> extends State<T> with SuperStateMixin {
+abstract class ISuperState<T extends StatefulWidget> extends State<T>
+    with SuperStateMixin {
   @override
   void initState();
 }
 
-abstract class SuperState<T extends StatefulWidget>
-extends State<T>
-with SuperStateMixin, TickerProviderStateMixin
-implements ISuperState<T> {
+abstract class SuperState<T extends StatefulWidget> extends State<T>
+    with SuperStateMixin, TickerProviderStateMixin
+    implements ISuperState<T> {
   @override
   void initState() {
     super.initState();
@@ -34,10 +34,10 @@ implements ISuperState<T> {
   }
 }
 
-abstract class SuperModularState<TWidget extends StatefulWidget, TBind extends Object>
-extends ModularState<TWidget, TBind>
-with SuperStateMixin, TickerProviderStateMixin
-implements ISuperState<TWidget> {
+abstract class SuperModularState<TWidget extends StatefulWidget,
+        TBind extends Object> extends ModularState<TWidget, TBind>
+    with SuperStateMixin, TickerProviderStateMixin
+    implements ISuperState<TWidget> {
   @override
   void initState() {
     super.initState();

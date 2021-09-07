@@ -324,7 +324,8 @@ class SuperScaffold extends StatefulWidget {
   ///    Flutter.
   final String? restorationId;
 
-  final Widget Function(BuildContext context, String message)? confirmationBuilder;
+  final Widget Function(BuildContext context, String message)?
+      confirmationBuilder;
   final Widget Function(BuildContext context)? loadingBuilder;
 
   final String confirmationTitle;
@@ -364,7 +365,7 @@ class SuperScaffold extends StatefulWidget {
     this.negativeConfirmationText = "Cancel",
     this.onWillPop,
   });
-  
+
   @override
   _SuperScaffoldState createState() => _SuperScaffoldState();
 }
@@ -378,7 +379,7 @@ class _SuperScaffoldState extends State<SuperScaffold> {
     super.initState();
 
     page = context.findAncestorStateOfType<ISuperState>();
-    
+
     if (page != null) {
       page!.scaffold = controller;
     }
@@ -387,30 +388,27 @@ class _SuperScaffoldState extends State<SuperScaffold> {
       if (controller.waiting.value) {
         if (controller.isConfirming) {
           showDialog(
-            context: context, 
+            context: context,
             builder: (context) => _buildConfirmation(context),
           );
         } else if (controller.isLoading) {
           showDialog(
-            context: context, 
+            context: context,
             builder: (context) => _buildLoading(context),
           );
         }
       }
     });
   }
-  
+
   PreferredSize? _buildAppBar() {
     return widget.appBar != null
-      ? PreferredSize(
-        preferredSize: Size.fromHeight(
-          AppBar().preferredSize.height +
-          (page != null && page!.hasTabs ? kToolbarHeight : 0)
-        ),
-        child: widget.appBar!, 
-      )
-      : null
-    ;
+        ? PreferredSize(
+            preferredSize: Size.fromHeight(AppBar().preferredSize.height +
+                (page != null && page!.hasTabs ? kToolbarHeight : 0)),
+            child: widget.appBar!,
+          )
+        : null;
   }
 
   Widget _buildScaffold(BuildContext context) {
@@ -421,11 +419,9 @@ class _SuperScaffoldState extends State<SuperScaffold> {
       floatingActionButtonLocation: widget.floatingActionButtonLocation,
       floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
       persistentFooterButtons: widget.persistentFooterButtons,
-      drawer: 
-        MediaQuery.of(context).orientation == Orientation.portrait
-        ? widget.drawer
-        : null
-      ,
+      drawer: MediaQuery.of(context).orientation == Orientation.portrait
+          ? widget.drawer
+          : null,
       onDrawerChanged: widget.onDrawerChanged,
       endDrawer: widget.endDrawer,
       onEndDrawerChanged: widget.onEndDrawerChanged,
@@ -452,69 +448,63 @@ class _SuperScaffoldState extends State<SuperScaffold> {
         return Future.value(true);
       },
       child: widget.confirmationBuilder != null
-        ? widget.confirmationBuilder!(context, controller.confirmationMessage!)
-        : AlertDialog(
-          title: Text(widget.confirmationTitle),
-          content: Text(controller.confirmationMessage!),
-          actions: [
-            FlatButton(
-              child: Text(widget.negativeConfirmationText),
-              onPressed: () {
-                controller.cancelConfirmation();
-                Navigator.of(context).pop();
-              },
+          ? widget.confirmationBuilder!(
+              context, controller.confirmationMessage!)
+          : AlertDialog(
+              title: Text(widget.confirmationTitle),
+              content: Text(controller.confirmationMessage!),
+              actions: [
+                FlatButton(
+                  child: Text(widget.negativeConfirmationText),
+                  onPressed: () {
+                    controller.cancelConfirmation();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                    child: Text(widget.positiveConfirmationText),
+                    onPressed: () {
+                      controller.acceptConfirmation();
+                      Navigator.of(context).pop();
+                    }),
+              ],
             ),
-            FlatButton(
-              child: Text(widget.positiveConfirmationText),
-              onPressed: () {
-                controller.acceptConfirmation();
-                Navigator.of(context).pop();
-              }
-            ),
-          ],
-        )
-      ,
     );
   }
 
   Widget _buildLoading(BuildContext context) {
-    controller
-          .loading!
-          .future
-          .whenComplete(Navigator.of(context).pop);
+    controller.loading!.future.whenComplete(Navigator.of(context).pop);
 
     return widget.loadingBuilder != null
-      ? widget.loadingBuilder!(context)
-      : Container(
-        color: Colors.black38,
-        child: Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.white),
-          )
-        ),
-      )
-    ;
+        ? widget.loadingBuilder!(context)
+        : Container(
+            color: Colors.black38,
+            child: Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.white),
+            )),
+          );
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: widget.onWillPop,
       child: OrientationBuilder(
         builder: (context, _) => Row(
           children: [
             MediaQuery.of(context).orientation == Orientation.landscape &&
-            widget.drawer != null
-            ? Hero(
-                tag: "super_scaffold_drawer",
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxWidth: 256,
-                  ),
-                  child: widget.drawer,
-                ),
-              )
-            : SizedBox(),
+                    widget.drawer != null
+                ? Hero(
+                    tag: "super_scaffold_drawer",
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 256,
+                      ),
+                      child: widget.drawer,
+                    ),
+                  )
+                : SizedBox(),
             Expanded(
               flex: 6,
               child: _buildScaffold(context),

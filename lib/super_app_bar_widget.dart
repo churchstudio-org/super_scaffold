@@ -497,12 +497,11 @@ class SuperAppBar extends StatelessWidget {
   Widget? _buildLeading(BuildContext context) {
     if (automaticallyImplyLeading) {
       return MediaQuery.of(context).orientation == Orientation.portrait
-        ? IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          )
-        : null
-      ;
+          ? IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            )
+          : null;
     }
 
     return leading;

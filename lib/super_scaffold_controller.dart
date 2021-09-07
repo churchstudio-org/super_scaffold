@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class SuperScaffoldController {
   String? confirmationMessage;
-  
+
   ValueNotifier<bool> waiting = ValueNotifier(false);
 
   Completer<bool>? confirmation;
