@@ -23,6 +23,22 @@ Widget build(BuildContext context) {
 
 All properties of Scaffold can be applied in SuperScaffold, like `appBar`, `body`, `floatingActionButton` and so on.
 
+## Show/hide drawer icon automatically
+
+Use the SuperAppBar instead of Flutter AppBar if you need to display the drawer icon on portrait and hide it on landscape automatically.
+
+```dart
+@override
+Widget build(BuildContext context) {
+    return SuperScaffold(
+        appBar: SuperAppBar(),
+        drawer: Drawer(),
+    );
+}
+```
+
+All properties of AppBar can be applied in SuperAppBar, like `title`, `actions`, `backgroundColor` and so on.
+
 ## Pin the AppBar on the top of screen
 
 If you're navigating between some pages and want to pin the AppBar on the top of screen, just insert them inside a Hero widget.
