@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:example/pages/tabbed_page.dart';
 import 'package:flutter/material.dart';
-import 'package:super_scaffold/super_scaffold_widget.dart';
-import 'package:super_scaffold/super_state.dart';
+import 'package:super_scaffold/super_scaffold.dart';
 
 import 'components/custom_drawer.dart';
 
@@ -54,20 +53,10 @@ class _ExampleState extends SuperState<Example> {
   @override
   Widget build(BuildContext context) {    
     return SuperScaffold(
-      appBar: OrientationBuilder(
-        builder: (context, _) => Hero(
-          tag: "appbar",
-          child: AppBar(
-            title: Text("Main Page"),
-            leading: 
-              MediaQuery.of(context).orientation == Orientation.portrait
-              ? IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              )
-              : null
-            ,
-          ),
+      appBar: Hero(
+        tag: "appbar",
+        child: SuperAppBar(
+          title: Text("Main Page"),
         ),
       ),
       drawer: CustomDrawer(),
