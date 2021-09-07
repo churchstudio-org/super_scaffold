@@ -1,3 +1,7 @@
+## 0.0.3
+
+* Show/hide drawer icon automatically using SuperAppBar
+
 ## 0.0.2
 
 * Show confirmation dialog
