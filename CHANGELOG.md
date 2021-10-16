@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Automatically set the scaffold of one or more SuperState ancestors of a SuperScaffold
+
 ## 0.0.3
 
 * Show/hide drawer icon automatically using SuperAppBar

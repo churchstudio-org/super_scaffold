@@ -378,10 +378,17 @@ class _SuperScaffoldState extends State<SuperScaffold> {
   void initState() {
     super.initState();
 
-    page = context.findAncestorStateOfType<ISuperState>();
+    ISuperState? ancestor = context.findAncestorStateOfType<ISuperState>();
 
-    if (page != null) {
-      page!.scaffold = controller;
+    while (true) {
+      if (ancestor == null) {
+        break;
+      } else {
+        ancestor.scaffold = controller;
+        page = page ?? ancestor;
+        ancestor.tabController = page?.tabController;
+        ancestor = ancestor.context.findAncestorStateOfType<ISuperState>();
+      }
     }
 
     controller.waiting.addListener(() {
