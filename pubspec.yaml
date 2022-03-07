@@ -1,6 +1,6 @@
 name: super_scaffold
 description: A scaffold with superpowers! Pin the Drawer on the left of screen. Pin the AppBar on the top of screen. Show confirmation dialog and loading screen easily.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/lucaslannes/super_scaffold
 
 environment:

@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Provide a reference of the ScaffoldState to the SuperScaffoldController
+
 ## 0.0.4
 
 * Automatically set the scaffold of one or more SuperState ancestors of a SuperScaffold
