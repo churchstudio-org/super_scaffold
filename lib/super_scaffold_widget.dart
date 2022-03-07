@@ -420,6 +420,7 @@ class _SuperScaffoldState extends State<SuperScaffold> {
 
   Widget _buildScaffold(BuildContext context) {
     return Scaffold(
+      key: controller.widget,
       appBar: _buildAppBar(),
       body: widget.body,
       floatingActionButton: widget.floatingActionButton,

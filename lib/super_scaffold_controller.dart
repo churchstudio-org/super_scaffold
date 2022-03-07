@@ -1,8 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class SuperScaffoldController {
+  GlobalKey<ScaffoldState> widget = GlobalKey<ScaffoldState>();
+  
   String? confirmationMessage;
 
   ValueNotifier<bool> waiting = ValueNotifier(false);
